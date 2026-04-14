@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growth4U × Gutendurance — Propuesta Trust Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES — GROWTH4U BRAND
+           =========================================== */
+        :root {
+            --green: #2EC4A0;
+            --green-light: #e8f9f5;
+            --green-glow: rgba(46, 196, 160, 0.15);
+            --green-border: rgba(46, 196, 160, 0.35);
+            --navy: #1a2744;
+            --navy-light: #243352;
+            --white: #ffffff;
+            --gray-50: #fafbfe;
+            --gray-100: #f7f8fc;
+            --gray-200: #eef0f6;
+            --gray-400: #9099b0;
+            --gray-700: #3d4560;
+            --red-muted: #cc4444;
+
+            --font: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+
+            --title-size: clamp(1.8rem, 5vw, 3.2rem);
+            --h2-size: clamp(1.4rem, 3.5vw, 2.4rem);
+            --h3-size: clamp(0.95rem, 2vw, 1.3rem);
+            --body-size: clamp(0.75rem, 1.3vw, 1rem);
+            --small-size: clamp(0.65rem, 1vw, 0.85rem);
+            --label-size: clamp(0.55rem, 0.8vw, 0.7rem);
+
+            --slide-padding: clamp(1.5rem, 5vw, 5rem);
+            --content-gap: clamp(0.75rem, 2vw, 1.75rem);
+            --element-gap: clamp(0.25rem, 1vw, 0.75rem);
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --radius-sm: 10px;
+            --radius-md: 14px;
+            --radius-lg: 18px;
+            --radius-pill: 100px;
+        }
+
+        /* ===========================================
+           RESET
+           =========================================== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* ===========================================
+           VIEWPORT FITTING: MANDATORY BASE STYLES
+           =========================================== */
+        html, body { height: 100%; overflow-x: hidden; }
+        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font);
+            background: var(--white);
+            color: var(--navy);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 100%;
+            overflow: hidden;
+            padding: var(--slide-padding);
+        }
+
+        .card, .container, .content-box {
+            max-width: min(90vw, 1000px);
+            max-height: min(80vh, 700px);
+        }
+
+        img, .image-container {
+            max-width: 100%;
+            max-height: min(50vh, 400px);
+            object-fit: contain;
+        }
+
+        /* ===========================================
+           RESPONSIVE
+           =========================================== */
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(0.75rem, 3vw, 2.5rem);
+                --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+                --title-size: clamp(1.4rem, 4.5vw, 2.5rem);
+                --h2-size: clamp(1.1rem, 3vw, 1.8rem);
+            }
+        }
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+                --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+                --title-size: clamp(1.1rem, 4vw, 2rem);
+                --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+            }
+            .nav-dots, .decorative { display: none; }
+        }
+        @media (max-height: 500px) {
+            :root {
+                --slide-padding: clamp(0.4rem, 2vw, 1rem);
+                --title-size: clamp(1rem, 3.5vw, 1.5rem);
+                --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+                --body-size: clamp(0.65rem, 1vw, 0.85rem);
+            }
+        }
+        @media (max-width: 700px) {
+            .two-col, .pillars-grid, .case-cards, .comparison-grid, .metrics-row, .timeline { flex-direction: column !important; }
+            .pillars-grid, .comparison-grid { grid-template-columns: 1fr !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+            html { scroll-behavior: auto; }
+        }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        h1, h2, h3 {
+            font-family: var(--font);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            color: var(--navy);
+        }
+        h1 { font-size: var(--title-size); }
+        h2 { font-size: var(--h2-size); }
+        h3 { font-size: var(--h3-size); }
+        h1 span, h2 span { color: var(--green); }
+
+        p, li {
+            font-size: var(--body-size);
+            line-height: 1.65;
+            color: var(--gray-700);
+        }
+
+        .label {
+            display: inline-block;
+            font-size: var(--label-size);
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--green);
+            margin-bottom: clamp(8px, 1.5vh, 16px);
+        }
+
+        .label-pill {
+            background: var(--green-glow);
+            color: var(--green);
+            font-size: var(--label-size);
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: var(--radius-pill);
+            display: inline-block;
+            margin-bottom: clamp(12px, 2vh, 24px);
+        }
+
+        /* ===========================================
+           SLIDE VARIANTS
+           =========================================== */
+
+        /* --- Dark (navy) slide --- */
+        .slide-dark {
+            background: var(--navy);
+            color: #fff;
+        }
+        .slide-dark::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(46,196,160,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(46,196,160,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .slide-dark h1, .slide-dark h2, .slide-dark h3 { color: #fff; }
+        .slide-dark p, .slide-dark li { color: rgba(255,255,255,0.7); }
+        .slide-dark .label { color: var(--green); }
+
+        /* --- Light slide --- */
+        .slide-light {
+            background: var(--gray-50);
+        }
+
+        /* ===========================================
+           COMPONENTS
+           =========================================== */
+
+        /* --- Two Column --- */
+        .two-col {
+            display: flex;
+            gap: clamp(1.5rem, 4vw, 3rem);
+            align-items: flex-start;
+        }
+        .two-col > * { flex: 1; min-width: 0; }
+
+        /* --- Metric Cards --- */
+        .metrics-row {
+            display: flex;
+            gap: clamp(0.5rem, 1.5vw, 1rem);
+            flex-wrap: wrap;
+        }
+
+        .metric-card {
+            flex: 1;
+            min-width: clamp(90px, 16vw, 160px);
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            padding: clamp(0.6rem, 1.5vw, 1.2rem);
+            text-align: center;
+        }
+
+        .slide-dark .metric-card {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        .metric-value {
+            font-size: clamp(1.4rem, 3.5vw, 2.5rem);
+            font-weight: 800;
+            color: var(--green);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .metric-label {
+            font-size: var(--small-size);
+            color: var(--gray-400);
+            margin-top: clamp(0.15rem, 0.4vw, 0.35rem);
+            line-height: 1.4;
+        }
+
+        .slide-dark .metric-label { color: rgba(255,255,255,0.5); }
+
+        /* --- Pillar Cards --- */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: clamp(0.5rem, 1.2vw, 0.9rem);
+        }
+
+        .pillar-card {
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            padding: clamp(0.7rem, 1.5vw, 1.2rem);
+        }
+
+        .pillar-icon {
+            width: clamp(28px, 4vw, 36px);
+            height: clamp(28px, 4vw, 36px);
+            background: var(--green-light);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(12px, 1.8vw, 16px);
+            margin-bottom: clamp(0.3rem, 0.8vw, 0.6rem);
+        }
+
+        .pillar-card h3 { margin-bottom: clamp(0.15rem, 0.4vw, 0.3rem); }
+        .pillar-card p {
+            font-size: var(--small-size);
+            color: var(--gray-700);
+            line-height: 1.55;
+        }
+
+        .slide-dark .pillar-card {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.08);
+        }
+        .slide-dark .pillar-card p { color: rgba(255,255,255,0.6); }
+        .slide-dark .pillar-icon { background: var(--green-glow); }
+
+        /* --- Timeline --- */
+        .timeline {
+            display: flex;
+            gap: clamp(0.5rem, 1.2vw, 0.9rem);
+        }
+
+        .timeline-phase {
+            flex: 1;
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            padding: clamp(0.7rem, 1.5vw, 1.2rem);
+            position: relative;
+        }
+
+        .phase-badge {
+            display: inline-block;
+            background: var(--green);
+            color: var(--navy);
+            font-size: var(--label-size);
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: var(--radius-pill);
+            margin-bottom: clamp(0.3rem, 0.8vw, 0.6rem);
+        }
+
+        .timeline-phase h3 {
+            font-size: clamp(0.85rem, 1.5vw, 1.05rem);
+            margin-bottom: clamp(0.2rem, 0.5vw, 0.4rem);
+        }
+
+        .timeline-phase ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.1rem, 0.3vw, 0.25rem);
+        }
+
+        .timeline-phase li {
+            font-size: var(--small-size);
+            color: var(--gray-700);
+            padding-left: 1em;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .timeline-phase li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55em;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--green);
+        }
+
+        /* --- Roadmap v2: validation emphasis + conditional continuation --- */
+        .roadmap-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.6rem, 1.4vw, 1rem);
+        }
+        .roadmap-stage {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: var(--label-size);
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gray-500);
+        }
+        .roadmap-stage .stage-pill {
+            display: inline-block;
+            background: var(--green);
+            color: var(--navy);
+            padding: 3px 10px;
+            border-radius: var(--radius-pill);
+            font-weight: 800;
+        }
+        .roadmap-stage.continuation .stage-pill {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+        .timeline-phase.validation {
+            background: #fff;
+            border: 1.5px solid var(--green);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+        }
+        .timeline-phase.continuation {
+            background: var(--gray-100);
+            border: 1px dashed var(--gray-300);
+            opacity: 0.85;
+        }
+        .timeline-phase.continuation .phase-badge {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+        .timeline-phase.continuation li::before {
+            background: var(--gray-400);
+        }
+        .roadmap-gate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.8rem;
+            background: var(--gray-100);
+            border-radius: var(--radius-md);
+            font-size: var(--small-size);
+            color: var(--gray-700);
+            text-align: center;
+        }
+        .roadmap-gate strong { color: var(--navy); }
+
+        /* --- Case Cards --- */
+        .case-cards {
+            display: flex;
+            gap: clamp(0.5rem, 1.2vw, 0.9rem);
+        }
+
+        .case-card {
+            flex: 1;
+            border-radius: var(--radius-md);
+            padding: clamp(0.75rem, 1.5vw, 1.2rem);
+            border: 1px solid var(--gray-200);
+            background: var(--white);
+        }
+
+        .case-tag {
+            font-size: var(--label-size);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: var(--radius-pill);
+            display: inline-block;
+            margin-bottom: clamp(0.25rem, 0.6vw, 0.5rem);
+        }
+        .case-tag.health { background: var(--green-light); color: #1a8a6d; }
+        .case-tag.fintech { background: #eef0ff; color: #4a5ab8; }
+        .case-tag.launch { background: #fef3e2; color: #b87a2a; }
+
+        .case-card h3 {
+            font-size: clamp(0.9rem, 1.6vw, 1.15rem);
+            margin-bottom: clamp(0.3rem, 0.6vw, 0.5rem);
+        }
+
+        .case-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: clamp(0.15rem, 0.4vw, 0.3rem) 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .case-stat:last-child { border-bottom: none; }
+
+        .stat-label {
+            font-size: var(--small-size);
+            color: var(--gray-400);
+        }
+        .stat-value {
+            font-size: clamp(0.8rem, 1.4vw, 1rem);
+            font-weight: 700;
+            color: var(--navy);
+        }
+        .stat-value.highlight { color: var(--green); }
+
+        /* --- Comparison Grid --- */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(0.5rem, 1.2vw, 1rem);
+        }
+
+        .comp-card {
+            border-radius: var(--radius-lg);
+            padding: clamp(1rem, 2.5vw, 2rem);
+            border: 1px solid var(--gray-200);
+        }
+        .comp-card.bad { background: var(--gray-100); }
+        .comp-card.good {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--green-border);
+        }
+
+        .comp-label {
+            font-size: var(--label-size);
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: clamp(0.3rem, 0.8vw, 0.6rem);
+        }
+        .comp-card.bad .comp-label { color: var(--red-muted); }
+        .comp-card.good .comp-label { color: var(--green); }
+
+        .comp-card h3 {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            margin-bottom: clamp(0.2rem, 0.5vw, 0.4rem);
+        }
+        .comp-card.good h3 { color: #fff; }
+        .comp-card p { font-size: var(--small-size); line-height: 1.6; }
+        .comp-card.good p { color: rgba(255,255,255,0.7); }
+
+        /* --- Quote Block --- */
+        .quote-block {
+            background: var(--gray-100);
+            border-left: 4px solid var(--green);
+            border-radius: 4px var(--radius-md) var(--radius-md) 4px;
+            padding: clamp(0.8rem, 2vw, 1.5rem) clamp(1rem, 2.5vw, 2rem);
+        }
+        .quote-block p {
+            font-size: clamp(0.85rem, 1.6vw, 1.15rem);
+            font-weight: 600;
+            color: var(--navy);
+            line-height: 1.55;
+            letter-spacing: -0.01em;
+        }
+        .quote-block strong { color: var(--green); }
+
+        .slide-dark .quote-block {
+            background: rgba(255,255,255,0.05);
+            border-left-color: var(--green);
+        }
+        .slide-dark .quote-block p { color: #fff; }
+
+        /* --- Comparison Table (slide 8) --- */
+        .comp-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        .comp-table th, .comp-table td {
+            padding: clamp(0.35rem, 0.9vw, 0.65rem) clamp(0.5rem, 1.5vw, 1rem);
+            text-align: left;
+            font-size: var(--small-size);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .comp-table th {
+            background: var(--gray-100);
+            font-weight: 700;
+            font-size: var(--label-size);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--gray-400);
+        }
+        .comp-table tr:last-child td { border-bottom: none; }
+        .comp-table td:first-child { color: var(--navy); font-weight: 600; }
+        .comp-table .old { color: var(--gray-400); }
+        .comp-table .new { color: var(--green); font-weight: 600; }
+
+        /* --- Tool Cards (slide 9) --- */
+        .tool-card {
+            background: var(--navy);
+            border: 1px solid var(--green-border);
+            border-radius: var(--radius-md);
+            padding: clamp(0.7rem, 1.5vw, 1.2rem);
+            color: #fff;
+        }
+        .tool-card h3 { color: #fff; margin-bottom: clamp(0.15rem, 0.4vw, 0.3rem); }
+        .tool-card .tool-tag {
+            display: inline-block;
+            background: var(--green-glow);
+            color: var(--green);
+            font-size: var(--label-size);
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: var(--radius-pill);
+            margin-bottom: clamp(0.2rem, 0.5vw, 0.4rem);
+        }
+        .tool-card p { font-size: var(--small-size); color: rgba(255,255,255,0.65); line-height: 1.55; }
+
+        /* --- CTA --- */
+        .cta-btn {
+            display: inline-block;
+            background: var(--green);
+            color: var(--navy);
+            font-size: clamp(0.8rem, 1.3vw, 1rem);
+            font-weight: 800;
+            padding: clamp(0.6rem, 1.2vw, 0.9rem) clamp(1.2rem, 2.5vw, 2rem);
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            letter-spacing: -0.01em;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(46,196,160,0.35);
+        }
+
+        /* --- CTA Details --- */
+        .cta-details {
+            display: flex;
+            gap: clamp(1.5rem, 4vw, 3rem);
+            margin-top: var(--content-gap);
+        }
+        .cta-item { text-align: center; }
+        .cta-value {
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+            font-weight: 800;
+            color: var(--green);
+        }
+        .cta-desc {
+            font-size: var(--small-size);
+            color: rgba(255,255,255,0.45);
+            margin-top: 0.15em;
+        }
+
+        /* --- Bullet list (healthtech slide) --- */
+        .check-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.25rem, 0.6vw, 0.5rem);
+        }
+        .check-list li {
+            font-size: var(--small-size);
+            padding-left: 1.6em;
+            position: relative;
+            line-height: 1.55;
+        }
+        .check-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-weight: 800;
+            color: var(--green);
+        }
+        .slide-dark .check-list li { color: rgba(255,255,255,0.75); }
+
+        /* ===========================================
+           ANIMATIONS
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.5s var(--ease-out-expo), transform 0.5s var(--ease-out-expo);
+        }
+        .slide.visible .reveal,
+        .slide.visible .reveal-scale {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .reveal:nth-child(1) { transition-delay: 0.03s; }
+        .reveal:nth-child(2) { transition-delay: 0.08s; }
+        .reveal:nth-child(3) { transition-delay: 0.13s; }
+        .reveal:nth-child(4) { transition-delay: 0.18s; }
+        .reveal:nth-child(5) { transition-delay: 0.23s; }
+        .reveal:nth-child(6) { transition-delay: 0.28s; }
+
+        .reveal-scale:nth-child(1) { transition-delay: 0.03s; }
+        .reveal-scale:nth-child(2) { transition-delay: 0.08s; }
+        .reveal-scale:nth-child(3) { transition-delay: 0.13s; }
+        .reveal-scale:nth-child(4) { transition-delay: 0.18s; }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--green);
+            z-index: 9999;
+            transition: width 0.3s ease;
+        }
+
+        /* ===========================================
+           NAV DOTS
+           =========================================== */
+        .nav-dots {
+            position: fixed;
+            right: clamp(0.5rem, 1.5vw, 1rem);
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            z-index: 9998;
+        }
+        .nav-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gray-400);
+            opacity: 0.3;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            padding: 0;
+        }
+        .nav-dot.active {
+            opacity: 1;
+            background: var(--green);
+            transform: scale(1.5);
+        }
+
+        /* Slide counter */
+        .slide-counter {
+            position: fixed;
+            bottom: clamp(0.5rem, 1.5vw, 1rem);
+            right: clamp(0.5rem, 1.5vw, 1rem);
+            font-size: var(--label-size);
+            color: var(--gray-400);
+            z-index: 9998;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+        .slide-dark ~ .slide-counter { color: rgba(255,255,255,0.3); }
+
+        /* ===========================================
+           INLINE EDITING
+           =========================================== */
+        .edit-hotzone {
+            position: fixed; top: 0; left: 0;
+            width: 80px; height: 80px;
+            z-index: 10000; cursor: pointer;
+        }
+        .edit-toggle {
+            position: fixed;
+            top: clamp(0.5rem, 1.5vw, 1rem);
+            left: clamp(0.5rem, 1.5vw, 1rem);
+            background: var(--navy);
+            border: 1px solid var(--green-border);
+            color: var(--green);
+            font-family: var(--font);
+            font-size: var(--small-size);
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10001;
+        }
+        .edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+        .edit-toggle.active { background: var(--green); color: var(--navy); border-color: var(--green); }
+
+        [contenteditable="true"] {
+            outline: 2px dashed var(--green);
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+
+        .edit-save-toast {
+            position: fixed;
+            bottom: clamp(1rem, 3vw, 2rem);
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--green);
+            color: var(--navy);
+            font-family: var(--font);
+            font-size: var(--small-size);
+            font-weight: 700;
+            padding: 8px 20px;
+            border-radius: var(--radius-pill);
+            opacity: 0;
+            transition: all 0.3s var(--ease-out-expo);
+            z-index: 10002;
+            pointer-events: none;
+        }
+        .edit-save-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <nav class="nav-dots" id="navDots"></nav>
+    <div class="slide-counter" id="slideCounter"></div>
+
+    <div class="edit-hotzone" id="editHotzone"></div>
+    <button class="edit-toggle" id="editToggle">Editar</button>
+    <div class="edit-save-toast" id="saveToast">Guardado ✓</div>
+
+    <!-- ===================================================
+         SLIDE 1 — TITLE (DARK)
+         =================================================== -->
+    <section class="slide slide-dark" id="slide-1">
+        <div class="slide-content" style="align-items:center;text-align:center;gap:var(--content-gap);">
+            <span class="label-pill reveal" data-editable>Growth4U × Gutendurance</span>
+            <h1 class="reveal" style="max-width:16ch;" data-editable>Construye tu <span>motor de confianza</span></h1>
+            <p class="reveal" style="max-width:48ch;font-size:clamp(0.85rem,1.6vw,1.1rem);" data-editable>3 meses de validación para encontrar Product–Market Fit y sentar las bases del Trust Engine. Escala solo si los datos lo justifican.</p>
+            <p class="reveal" style="font-size:var(--small-size);color:rgba(255,255,255,0.35);margin-top:var(--element-gap);">Abril 2026 · Confidencial</p>
+        </div>
+    </section>
+
+    <!-- ===================================================
+         SLIDE 2 — EL PROBLEMA
+         =================================================== -->
+    <section class="slide slide-light" id="slide-2">
+        <div class="slide-content" style="gap:var(--content-gap);">
+            <span class="label reveal">El desafío</span>
+            <h2 class="reveal" data-editable>En salud, la confianza <span>no es opcional</span></h2>
+
+            <div class="metrics-row reveal">
+                <div class="metric-card">
+                    <div class="metric-value" data-editable>81%</div>
+                    <div class="metric-label" data-editable>de usuarios preocupados por sus datos de salud</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" data-editable>74%</div>
+                    <div class="metric-label" data-editable>necesitan validación profesional para confiar</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" data-editable>60-70%</div>
+                    <div class="metric-label" data-editable>abandonan una app de salud en 30 días</div>
+                </div>
+            </div>
+
+            <div class="quote-block reveal">
+                <p data-editable>Si un usuario busca <strong>Gutendurance</strong> y no encuentra ni reviews, ni menciones, ni artículos — no va a confiar su salud a una marca invisible.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================
+         SLIDE 3 — GASTO vs ACTIVO
+         =================================================== -->
+    <section class="slide" id="slide-3">
+        <div class="slide-content" style="gap:var(--content-gap);">
+            <span class="label reveal">Paid vs. Orgánico</span>
+            <h2 class="reveal" data-editable>No alquilamos atención. <span>Construimos credibilidad.</span></h2>
+
+            <div class="comparison-grid reveal">
+                <div class="comp-card bad">
+                    <div class="comp-label">Modelo tradicional</div>
+                    <h3 data-editable>Gasto recurrente</h3>
+                    <p data-editable>CAC €50–150 en HealthTech. Si cortas el presupuesto, las ventas mueren. No puedes hacer claims de salud agresivos en ads. Imposible pre-MVP.</p>
+                </div>
+                <div class="comp-card good">
+                    <div class="comp-label">Trust Engine</div>
+                    <h3 data-editable>Activo permanente</h3>
+                    <p data-editable>CAC €5–25 amortizado. Artículos SEO siguen rankeando, reviews acumuladas permanecen, contenido de expertos sigue disponible. Construyes equity.</p>
+                </div>
+            </div>
+
+            <p class="reveal" style="font-size:var(--small-size);color:var(--gray-400);text-align:center;margin-top:var(--element-gap);" data-editable>Usuarios adquiridos orgánicamente tienen un LTV 30–50% superior · Fuente: Adjust Mobile App Trends 2024</p>
+        </div>
+    </section>
+
+    <!-- ===================================================
+         SLIDE 4 — TRUST ENGINE: 4 PILARES
+         =================================================== -->
+    <section class="slide slide-dark" id="slide-4">
+        <div class="slide-content" style="gap:var(--content-gap);">
+            <span class="label-pill reveal" data-editable>La metodología</span>
+            <h2 class="reveal" data-editable>Los 4 pilares del <span>Trust Engine</span></h2>
+            <p class="reveal" style="max-width:55ch;" data-editable>Un sistema que construye confianza permanente, sustituyendo la dependencia de paid media por activos orgánicos que reducen el CAC y se acumulan con el tiempo.</p>
+
+            <div class="pillars-grid">
+                <div class="pillar-card reveal-scale">
+                    <div class="pillar-icon">🤝</div>
+                    <h3 data-editable>Borrowed Trust</h3>
+                    <p data-editable>20–30 microinfluencers, medios y expertos de nicho. Briefs con libertad creativa, acuerdos híbridos (fee + variable por activación).</p>
+                </div>
+                <div class="pillar-card reveal-scale">
+                    <div class="pillar-icon">🔍</div>
+                    <h3 data-editable>SERP Positioning</h3>
+                    <p data-editable>Dominamos lo que encuentra el usuario escéptico al buscar "[Marca] opiniones" o "¿es segura?". SEO + GEO + Schema Markup.</p>
+                </div>
+                <div class="pillar-card reveal-scale">
+                    <div class="pillar-icon">⭐</div>
+                    <h3 data-editable>Brand Trust Assets</h3>
+                    <p data-editable>Sistema automatizado de NPS: promotores → review pública, pasivos → feedback interno, detractores → soporte prioritario.</p>
+                </div>
+                <div class="pillar-card reveal-scale">
+                    <div class="pillar-icon">💬</div>
+                    <h3 data-editable>Niche Conversations</h3>
+                    <p data-editable>Presencia en comunidades clave: Reddit, foros de salud, grupos. Aporte de valor genuino — marca solo cuando es la solución real.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================
+         SLIDE 5 — APLICADO A GUTENDURANCE
+         =================================================== -->
+    <section class="slide slide-light" id="slide-5">
+        <div class="slide-content" style="gap:var(--content-gap);">
+            <span class="label reveal">Aplicado a Gutendurance</span>
+            <h2 class="reveal" data-editable>Trust Engine <span>para HealthTech</span></h2>
+
+            <div class="two-col">
+                <div class="reveal">
+                    <h3 style="margin-bottom:var(--element-gap);" data-editable>Por qué salud es diferente</h3>
+                    <ul class="check-list">
+                        <li data-editable>Datos de salud son categoría especial RGPD — el usuario necesita confiar antes de compartir</li>
+                        <li data-editable>Las decisiones de salud afectan el cuerpo — umbral de confianza máximo</li>
+                        <li data-editable>No puedes hacer claims agresivos en ads — la prueba social es el único camino</li>
+                        <li data-editable>Sin producto en mercado, no hay reviews naturales — hay que construirlas</li>
+                    </ul>
+                </div>
+                <div class="reveal">
+                    <h3 style="margin-bottom:var(--element-gap);" data-editable>Nuestro enfoque para vosotros</h3>
+                    <ul class="check-list">
+                        <li data-editable>Microinfluencers médicos y nutricionistas como canal de confianza prestada</li>
+                        <li data-editable>Contenido científico con autoría médica verificable (E-E-A-T de Google)</li>
+                        <li data-editable>Posicionamiento GEO para que las IAs recomienden Gutendurance</li>
+                        <li data-editable>Web optimizada con Alarife — landing por nicho + quiz de pre-cualificación</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================
+         SLIDE 6 — CASOS DE ÉXITO
+         =================================================== -->
+    <section class="slide" id="slide-6">
+        <div class="slide-content" style="gap:var(--content-gap);">
+            <span class="label reveal">Track record</span>
+            <h2 class="reveal" data-editable>Donde ya <span>funciona</span></h2>
+
+            <div class="case-cards">
+                <div class="case-card reveal-scale">
+                    <span class="case-tag health">Salud B2C</span>
+                    <h3 data-editable>Hospital Capilar</h3>
+                    <div class="case-stat"><span class="stat-label">Objetivo</span><span class="stat-value highlight" data-editable>+€50K/mes</span></div>
+                    <div class="case-stat"><span class="stat-label">Trust Engine</span><span class="stat-value" data-editable>SEO + creadores</span></div>
+                    <div class="case-stat"><span class="stat-label">Reviews</span><span class="stat-value highlight" data-editable>69 → 200+</span></div>
+                    <div class="case-stat"><span class="stat-label">Segmentación</span><span class="stat-value" data-editable>7 nichos clínicos</span></div>
+                </div>
+                <div class="case-card reveal-scale">
+                    <span class="case-tag fintech">Fintech B2C</span>
+                    <h3 data-editable>Bnext</h3>
+                    <div class="case-stat"><span class="stat-label">Usuarios</span><span class="stat-value highlight" data-editable>0 → 500K</span></div>
+                    <div class="case-stat"><span class="stat-label">CAC blended</span><span class="stat-value highlight" data-editable>€12,40</span></div>
+                    <div class="case-stat"><span class="stat-label">Activación</span><span class="stat-value" data-editable>×3 (20→70%)</span></div>
+                    <div class="case-stat"><span class="stat-label">Boca a boca</span><span class="stat-value" data-editable>19% orgánico</span></div>
+                </div>
+                <div class="case-card reveal-scale">
+                    <span class="case-tag launch">Desde cero</span>
+                    <h3 data-editable>GoCardless</h3>
+                    <div class="case-stat"><span class="stat-label">Situación</span><span class="stat-value" data-editable>Lanzamiento ES+PT</span></div>
+                    <div class="case-stat"><span class="stat-label">MRR 6 meses</span><span class="stat-value highlight" data-editable>€10K</span></div>
+                    <div class="case-stat"><span class="stat-label">Método</span><span class="stat-value" data-editable>Contenido + alianzas</span></div>
+                    <div class="case-stat"><span class="stat-label">CAC</span><span class="stat-value highlight" data-editable>-70%</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================
+         SLIDE 7 — TIMELINE
+         =================================================== -->
+    <section class="slide slide-light" id="slide-7">
+        <div class="slide-content" style="gap:var(--content-gap);">
+            <span class="label reveal">Roadmap</span>
+            <h2 class="reveal" data-editable>Primero <span>validamos</span>, después escalamos</h2>
+            <p class="reveal" style="max-width:58ch;font-size:clamp(0.85rem,1.6vw,1.05rem);color:var(--gray-500);" data-editable>3 meses de validación con canales gratuitos para encontrar nicho, mensaje y primeras señales de demanda. Solo si los indicadores validan la tesis, continuamos con la ejecución del Trust Engine completo.</p>
+
+            <div class="roadmap-wrap">
+                <div class="roadmap-stage reveal"><span class="stage-pill" data-editable>Fase 1 · Validación</span><span data-editable>Meses 1–3 · compromiso inicial</span></div>
+                <div class="timeline">
+                    <div class="timeline-phase validation reveal-scale">
+                        <span class="phase-badge" data-editable>Mes 1</span>
+                        <h3 data-editable>Nicho + mensaje</h3>
+                        <ul>
+                            <li data-editable>Análisis competitivo profundo</li>
+                            <li data-editable>Hipótesis de Product–Market Fit</li>
+                            <li data-editable>Segmentación de audiencias clínicas</li>
+                            <li data-editable>Posicionamiento y copy base</li>
+                        </ul>
+                    </div>
+                    <div class="timeline-phase validation reveal-scale">
+                        <span class="phase-badge" data-editable>Mes 2</span>
+                        <h3 data-editable>Señales con canales gratuitos</h3>
+                        <ul>
+                            <li data-editable>LinkedIn orgánico del founder</li>
+                            <li data-editable>Email directo a listas segmentadas</li>
+                            <li data-editable>Quiz diagnóstico (tipo Hospital Capilar)</li>
+                            <li data-editable>Landing ligera + formulario de interés</li>
+                        </ul>
+                    </div>
+                    <div class="timeline-phase validation reveal-scale">
+                        <span class="phase-badge" data-editable>Mes 3</span>
+                        <h3 data-editable>Bases del Trust Engine</h3>
+                        <ul>
+                            <li data-editable>Primeros testimonios y reviews</li>
+                            <li data-editable>Mapa de microinfluencers candidatos</li>
+                            <li data-editable>Activos SEO/GEO iniciales</li>
+                            <li data-editable>Revisión de señales + decisión go/no-go</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="roadmap-gate reveal" data-editable>Checkpoint mes 3: si las señales validan la tesis <strong>continuamos</strong>. Si no, pivotamos o cerramos sin coste hundido.</div>
+
+                <div class="roadmap-stage continuation reveal"><span class="stage-pill" data-editable>Fase 2 · Continuación</span><span data-editable>Meses 4–6 · condicional a validación</span></div>
+                <div class="timeline">
+                    <div class="timeline-phase continuation reveal-scale">
+                        <span class="phase-badge" data-editable>Mes 4</span>
+                        <h3 data-editable>Trust Engine en marcha</h3>
+                        <ul>
+                            <li data-editable>Primeros influencers activos</li>
+                            <li data-editable>SERP / GEO live</li>
+                            <li data-editable>Sistema de reviews automatizado</li>
+                        </ul>
+                    </div>
+                    <div class="timeline-phase continuation reveal-scale">
+                        <span class="phase-badge" data-editable>Mes 5</span>
+                        <h3 data-editable>Escala en canales validados</h3>
+                        <ul>
+                            <li data-editable>Artículos en medios especializados</li>
+                            <li data-editable>Comunidad y contenido continuo</li>
+                            <li data-editable>Paid solo sobre lo que ya convierte</li>
+                        </ul>
+                    </div>
+                    <div class="timeline-phase continuation reveal-scale">
+                        <span class="phase-badge" data-editable>Mes 6</span>
+                        <h3 data-editable>Consolidación + handover</h3>
+                        <ul>
+                            <li data-editable>Documentación completa</li>
+                            <li data-editable>Dashboards y playbooks</li>
+                            <li data-editable>Transferencia al equipo interno</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <p class="reveal" style="font-size:var(--small-size);color:var(--gray-400);text-align:center;" data-editable>Iteración semanal · Comunicación diaria vía Slack · Dashboard de métricas en tiempo real</p>
+        </div>
+    </section>
+
+    <!-- ===================================================
+         SLIDE 8 — POR QUÉ GROWTH4U
+         =================================================== -->
+    <section class="slide" id="slide-8">
+        <div class="slide-content" style="gap:var(--content-gap);">
+            <span class="label reveal">Diferencial</span>
+            <h2 class="reveal" data-editable>No somos una agencia <span>tradicional</span></h2>
+
+            <table class="comp-table reveal">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Agencia tradicional</th>
+                        <th>Growth4U</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-editable>Canales</td>
+                        <td class="old" data-editable>Solo paid media</td>
+                        <td class="new" data-editable>Los que se necesiten</td>
+                    </tr>
+                    <tr>
+                        <td data-editable>Iteración</td>
+                        <td class="old" data-editable>Reportes mensuales</td>
+                        <td class="new" data-editable>Semanal</td>
+                    </tr>
+                    <tr>
+                        <td data-editable>Facturación</td>
+                        <td class="old" data-editable>Fee mensual fijo</td>
+                        <td class="new" data-editable>Por proyecto cerrado</td>
+                    </tr>
+                    <tr>
+                        <td data-editable>Alcance</td>
+                        <td class="old" data-editable>Solo ejecutan</td>
+                        <td class="new" data-editable>Estrategia + Ejecución</td>
+                    </tr>
+                    <tr>
+                        <td data-editable>Herramientas</td>
+                        <td class="old" data-editable>Sistemas genéricos</td>
+                        <td class="new" data-editable>Stack propio con IA</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="quote-block reveal">
+                <p data-editable>Operamos el Trust Engine en los dos sectores donde la confianza es más crítica: <strong>fintech y salud</strong>. En ambos, el usuario no actúa sin validación social previa.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================
+         SLIDE 9 — HERRAMIENTAS
+         =================================================== -->
+    <section class="slide slide-dark" id="slide-9">
+        <div class="slide-content" style="gap:var(--content-gap);">
+            <span class="label-pill reveal">Nuestro stack</span>
+            <h2 class="reveal" data-editable>Tecnología <span>propia</span></h2>
+
+            <div class="pillars-grid">
+                <div class="tool-card reveal-scale">
+                    <span class="tool-tag">IA Research</span>
+                    <h3 data-editable>Sancho CMO</h3>
+                    <p data-editable>Competitive intelligence y onboarding automatizado. Lo que antes tomaba semanas, ahora se hace en días.</p>
+                </div>
+                <div class="tool-card reveal-scale">
+                    <span class="tool-tag">SEO + GEO</span>
+                    <h3 data-editable>Horus</h3>
+                    <p data-editable>Dominio de búsquedas en Google y motores IA — ChatGPT, Claude, Gemini. SEO + GEO integrado.</p>
+                </div>
+                <div class="tool-card reveal-scale">
+                    <span class="tool-tag">Web Builder</span>
+                    <h3 data-editable>Alarife</h3>
+                    <p data-editable>Webs y landings optimizadas en horas, conectadas a todo el contexto de marca y análisis.</p>
+                </div>
+                <div class="tool-card reveal-scale">
+                    <span class="tool-tag">Analytics + CRM</span>
+                    <h3 data-editable>PostHog + GHL</h3>
+                    <p data-editable>Product analytics, CRM, automatizaciones y tracking multi-touch completo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================
+         SLIDE 10 — CTA
+         =================================================== -->
+    <section class="slide slide-dark" id="slide-10">
+        <div class="slide-content" style="align-items:center;text-align:center;gap:var(--content-gap);">
+            <span class="label-pill reveal">Siguiente paso</span>
+            <h2 class="reveal" style="max-width:16ch;" data-editable>Hablemos de <span>tu motor de confianza</span></h2>
+            <p class="reveal" style="max-width:48ch;font-size:clamp(0.85rem,1.6vw,1.1rem);" data-editable>El momento ideal para implementar el Trust Engine es antes de salir a mercado. Gutendurance tiene esa ventana ahora.</p>
+
+            <div class="cta-details reveal">
+                <div class="cta-item">
+                    <div class="cta-value" data-editable>Lunes 20</div>
+                    <div class="cta-desc" data-editable>Próxima reunión</div>
+                </div>
+                <div class="cta-item">
+                    <div class="cta-value" data-editable>16:00h</div>
+                    <div class="cta-desc" data-editable>Hora confirmada</div>
+                </div>
+                <div class="cta-item">
+                    <div class="cta-value" data-editable>30 min</div>
+                    <div class="cta-desc" data-editable>Para definir el plan</div>
+                </div>
+            </div>
+
+            <p class="reveal" style="font-size:var(--small-size);color:rgba(255,255,255,0.3);margin-top:var(--element-gap);">martin@growth4u.io</p>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         JAVASCRIPT
+         =========================================== -->
+    <script>
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.currentSlide = 0;
+                this.totalSlides = this.slides.length;
+                this.setupIntersectionObserver();
+                this.setupKeyboardNav();
+                this.setupTouchNav();
+                this.setupProgressBar();
+                this.setupNavDots();
+                this.setupSlideCounter();
+            }
+
+            setupIntersectionObserver() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            const idx = Array.from(this.slides).indexOf(entry.target);
+                            if (idx !== -1) {
+                                this.currentSlide = idx;
+                                this.updateProgressBar();
+                                this.updateNavDots();
+                                this.updateSlideCounter();
+                            }
+                        }
+                    });
+                }, { threshold: 0.4 });
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.target.getAttribute('contenteditable') === 'true') return;
+                    if (['ArrowDown', 'ArrowRight', ' ', 'PageDown'].includes(e.key)) {
+                        e.preventDefault();
+                        this.goToSlide(Math.min(this.currentSlide + 1, this.totalSlides - 1));
+                    } else if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) {
+                        e.preventDefault();
+                        this.goToSlide(Math.max(this.currentSlide - 1, 0));
+                    } else if (e.key === 'Home') { e.preventDefault(); this.goToSlide(0); }
+                    else if (e.key === 'End') { e.preventDefault(); this.goToSlide(this.totalSlides - 1); }
+                });
+            }
+
+            setupTouchNav() {
+                let startY = 0, startX = 0;
+                document.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; startX = e.touches[0].clientX; }, { passive: true });
+                document.addEventListener('touchend', (e) => {
+                    const diffY = startY - e.changedTouches[0].clientY;
+                    const diffX = startX - e.changedTouches[0].clientX;
+                    if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 50) {
+                        this.goToSlide(diffY > 0 ? Math.min(this.currentSlide + 1, this.totalSlides - 1) : Math.max(this.currentSlide - 1, 0));
+                    }
+                }, { passive: true });
+            }
+
+            setupProgressBar() { this.progressBar = document.getElementById('progressBar'); this.updateProgressBar(); }
+            updateProgressBar() { if (this.progressBar) this.progressBar.style.width = ((this.currentSlide + 1) / this.totalSlides * 100) + '%'; }
+
+            setupNavDots() {
+                const c = document.getElementById('navDots');
+                if (!c) return;
+                this.slides.forEach((_, i) => {
+                    const d = document.createElement('button');
+                    d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+                    d.setAttribute('aria-label', 'Slide ' + (i + 1));
+                    d.addEventListener('click', () => this.goToSlide(i));
+                    c.appendChild(d);
+                });
+                this.dots = c.querySelectorAll('.nav-dot');
+            }
+            updateNavDots() { if (this.dots) this.dots.forEach((d, i) => d.classList.toggle('active', i === this.currentSlide)); }
+
+            setupSlideCounter() { this.counter = document.getElementById('slideCounter'); this.updateSlideCounter(); }
+            updateSlideCounter() { if (this.counter) this.counter.textContent = String(this.currentSlide + 1).padStart(2, '0') + ' / ' + String(this.totalSlides).padStart(2, '0'); }
+
+            goToSlide(i) { this.slides[i].scrollIntoView({ behavior: 'smooth' }); }
+        }
+
+        class InlineEditor {
+            constructor() {
+                this.isActive = false;
+                this.editables = document.querySelectorAll('[data-editable]');
+                this.toggle = document.getElementById('editToggle');
+                this.toast = document.getElementById('saveToast');
+                this.storageKey = 'gutendurance-proposal-edits';
+                this.loadSaved();
+                this.setupHotzone();
+                this.setupKeyboard();
+            }
+
+            setupHotzone() {
+                const hz = document.getElementById('editHotzone');
+                const tg = this.toggle;
+                let t = null;
+                hz.addEventListener('mouseenter', () => { clearTimeout(t); tg.classList.add('show'); });
+                hz.addEventListener('mouseleave', () => { t = setTimeout(() => { if (!this.isActive) tg.classList.remove('show'); }, 400); });
+                tg.addEventListener('mouseenter', () => clearTimeout(t));
+                tg.addEventListener('mouseleave', () => { t = setTimeout(() => { if (!this.isActive) tg.classList.remove('show'); }, 400); });
+                tg.addEventListener('click', () => this.toggleEditMode());
+                hz.addEventListener('click', () => this.toggleEditMode());
+            }
+
+            setupKeyboard() {
+                document.addEventListener('keydown', (e) => {
+                    if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) this.toggleEditMode();
+                    if (e.key === 's' && (e.metaKey || e.ctrlKey) && this.isActive) { e.preventDefault(); this.save(); }
+                });
+            }
+
+            toggleEditMode() {
+                this.isActive = !this.isActive;
+                this.toggle.classList.toggle('active', this.isActive);
+                this.toggle.classList.toggle('show', this.isActive);
+                this.toggle.textContent = this.isActive ? 'Editando...' : 'Editar';
+                this.editables.forEach(el => el.setAttribute('contenteditable', this.isActive));
+                if (!this.isActive) this.save();
+            }
+
+            save() {
+                const d = {};
+                this.editables.forEach((el, i) => d[i] = el.innerHTML);
+                localStorage.setItem(this.storageKey, JSON.stringify(d));
+                this.showToast();
+            }
+
+            loadSaved() {
+                const s = localStorage.getItem(this.storageKey);
+                if (!s) return;
+                try { const d = JSON.parse(s); this.editables.forEach((el, i) => { if (d[i] !== undefined) el.innerHTML = d[i]; }); } catch(e) {}
+            }
+
+            showToast() { this.toast.classList.add('show'); setTimeout(() => this.toast.classList.remove('show'), 1500); }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { new SlidePresentation(); new InlineEditor(); });
+    </script>
+</body>
+</html>
