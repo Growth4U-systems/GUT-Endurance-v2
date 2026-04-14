@@ -359,10 +359,16 @@
             flex-direction: column;
             gap: clamp(0.35rem, 0.8vw, 0.55rem);
         }
-        #slide-7 .slide-content { gap: clamp(0.45rem, 1vw, 0.8rem); }
-        #slide-7 .timeline-phase { padding: clamp(0.55rem, 1.2vw, 0.9rem); }
+        #slide-7 .slide-content { gap: clamp(0.4rem, 0.9vw, 0.7rem); justify-content: flex-start; }
+        #slide-7 .timeline-phase { padding: clamp(0.55rem, 1.2vw, 0.9rem); display: flex; flex-direction: column; }
         #slide-7 .timeline-phase h3 { margin-bottom: clamp(0.15rem, 0.35vw, 0.3rem); }
+        #slide-7 .timeline-phase ul { flex: 1; }
+        #slide-7 .timeline-phase li { line-height: 1.35; }
+        #slide-7 .roadmap-wrap { flex: 1; }
+        #slide-7 .roadmap-wrap .timeline { flex: 1; align-items: stretch; }
         #slide-7 .roadmap-gate { padding: 0.35rem 0.7rem; }
+        #slide-7 h2 { margin-bottom: 0; }
+        #slide-7 > .slide-content > p { margin: 0; }
         .roadmap-stage {
             display: flex;
             align-items: center;
